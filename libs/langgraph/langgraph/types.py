@@ -95,6 +95,12 @@ else:
     _DC_KWARGS = {"frozen": True}
 
 
+if sys.version_info >= (3, 11):
+    _DC_SLOTS = {"weakref_slot": True, "slots": True}
+else:
+    _DC_SLOTS = {}
+
+
 class RetryPolicy(NamedTuple):
     """Configuration for retrying nodes.
 
@@ -136,7 +142,7 @@ _DEFAULT_INTERRUPT_ID = "placeholder-id"
 
 
 @final
-@dataclasses.dataclass(init=False)
+@dataclasses.dataclass(init=False, **_DC_SLOTS)
 class Interrupt:
     """Information about an interrupt that occurred in a node.
 
