@@ -22,7 +22,7 @@ from typing import (
     TypeVar,
     cast,
 )
-from langgraph.types import Interrupt
+
 from langchain_core.callbacks import AsyncParentRunManager, ParentRunManager
 from langchain_core.runnables import RunnableConfig
 from langgraph.cache.base import BaseCache
@@ -114,6 +114,7 @@ from langgraph.types import (
     CachePolicy,
     Command,
     Durability,
+    Interrupt,
     PregelExecutableTask,
     RetryPolicy,
     StreamMode,
@@ -566,9 +567,9 @@ class PregelLoop:
             # for the task that are never handed off to the runner,
             # the interrupt is still pending, so preserve it
             self.checkpoint_pending_writes = [
-                w for w in self.checkpoint_pending_writes 
-                if isinstance(w[2][0], Interrupt) 
-                and w[2][0].id in pending_interrupts
+                w
+                for w in self.checkpoint_pending_writes
+                if isinstance(w[2][0], Interrupt) and w[2][0].id in pending_interrupts
             ]
 
         # "not skip_done_tasks" only applies to first tick after resuming

@@ -2,9 +2,9 @@ import operator
 from typing import Annotated
 
 import pytest
+from langgraph.checkpoint.base import BaseCheckpointSaver
 from typing_extensions import TypedDict
 
-from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, Durability, Send, interrupt
 
