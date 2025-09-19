@@ -540,6 +540,15 @@ class PregelLoop:
         return True
 
     def after_tick(self) -> None:
+        if self.task_ids_to_block:
+            raise GraphInterrupt(
+                tuple(
+                    w[1]
+                    for t in self.tasks.values()
+                    for w in t.writes
+                    if w[0] == INTERRUPT
+                )
+            )
         # finish superstep
         writes = [w for t in self.tasks.values() for w in t.writes]
         # all tasks have finished

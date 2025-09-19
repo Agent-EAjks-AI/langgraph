@@ -218,7 +218,7 @@ def test_interrupt_with_send_payloads_sequential_resume(
     # Resume first interrupt only
     first_interrupt = interrupts[0]
     first_resume_map = {
-        first_interrupt.interrupt_id: f"human_input_{first_interrupt.value['processing']}"
+        first_interrupt.id: f"human_input_{first_interrupt.value['processing']}"
     }
 
     partial_result = graph.invoke(Command(resume=first_resume_map), config=config)
@@ -230,7 +230,7 @@ def test_interrupt_with_send_payloads_sequential_resume(
     # Resume second interrupt
     second_interrupt = remaining_interrupts[0]
     second_resume_map = {
-        second_interrupt.interrupt_id: f"human_input_{second_interrupt.value['processing']}"
+        second_interrupt.id: f"human_input_{second_interrupt.value['processing']}"
     }
 
     final_result = graph.invoke(Command(resume=second_resume_map), config=config)
