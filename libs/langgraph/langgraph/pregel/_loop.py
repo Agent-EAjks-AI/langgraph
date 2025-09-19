@@ -114,7 +114,6 @@ from langgraph.types import (
     CachePolicy,
     Command,
     Durability,
-    Interrupt,
     PregelExecutableTask,
     RetryPolicy,
     StreamMode,
@@ -568,19 +567,8 @@ class PregelLoop:
             self._emit(
                 "values", map_output_values, self.output_keys, writes, self.channels
             )
-        # clear pending writes but preserve pending interrupts
-        pending_interrupts = self._pending_interrupts()
-        if len(pending_interrupts) == 0:
-            self.checkpoint_pending_writes.clear()
-        else:
-            # for the task that are never handed off to the runner,
-            # the interrupt is still pending, so preserve it
-            self.checkpoint_pending_writes = [
-                w
-                for w in self.checkpoint_pending_writes
-                if isinstance(w[2][0], Interrupt) and w[2][0].id in pending_interrupts
-            ]
-
+        # clear pending writes
+        self.checkpoint_pending_writes.clear()
         # "not skip_done_tasks" only applies to first tick after resuming
         self.skip_done_tasks = True
         # save checkpoint
